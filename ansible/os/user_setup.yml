@@ -1,0 +1,17 @@
+- name: Set up users and groups
+  hosts: deploy
+  become: true
+
+  tasks:
+    - name: Create docker group
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Create docker user and add it to docker group
+      ansible.builtin.user:
+        name: docker
+        group: docker
+        password: "$6$hKUIHWzyAe.qdN/Y$XberLV.P/60muILUwkiTFs1rW5YqNs40H1032ZslYKw9psOqPXz/BzhwtRyo5Lz7JQRX6MplR1WTP5Q88zCUu/"
+        generate_ssh_key: true
+        state: present

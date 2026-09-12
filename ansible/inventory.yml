@@ -1,0 +1,17 @@
+all:
+  hosts:
+    debian_vm:
+      ansible_host: 192.168.0.80
+  vars:
+    ansible_user: ansible
+    ansible_become_user: root
+
+
+deploy:
+  hosts:
+    debian_vm:
+    
+
+debian:
+  hosts:
+    debian_vm:
