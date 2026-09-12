@@ -1,0 +1,37 @@
+---
+- name: Deploy pi-hole
+  hosts: pi-hole
+  become: true
+  vars:
+    app_workdir: "{{ docker_workdir }}/pi-hole"
+
+  tasks:
+    - name: Set up workdir
+      ansible.builtin.file:
+        name: "{{ app_workdir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Generate .env file from template
+      ansible.builtin.template:
+        src: "{{ repo_root }}/docker/pi-hole/.env.j2"
+        dest: "{{ app_workdir }}/.env"
+        mode: '0600'
+
+    - name: Copy compose file
+      ansible.builtin.copy:
+        src: "{{ repo_root }}/docker/pi-hole/compose.yml"
+        dest: "{{ app_workdir }}"
+        mode: '0755'
+
+    - name: Run the container as daemon
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_workdir }}"
+        env_files:
+          - ".env"
+        state: present
+      register: output
+
+    - name: Show output
+      ansible.builtin.debug:
+        var: output

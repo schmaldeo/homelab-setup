@@ -10,6 +10,12 @@ all:
 deploy:
   hosts:
     debian_vm:
+
+pi-hole:
+  hosts:
+    debian_vm:
+  vars:
+    ansible_become_user: docker
     
 
 debian:
