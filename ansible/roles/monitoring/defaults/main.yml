@@ -9,4 +9,5 @@ monitoring_grafana_image: "grafana/grafana:12.1.1"
 monitoring_node_exporter_image: "prom/node-exporter:v1.9.1"
 monitoring_wireguard_exporter_image: >-
   mindflavor/prometheus-wireguard-exporter:latest
+monitoring_wireguard_active_peer_seconds: 180
 monitoring_prometheus_port: 19090
