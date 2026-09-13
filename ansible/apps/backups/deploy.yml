@@ -21,6 +21,15 @@
         dest: "{{ shrink_backup_workdir }}"
         version: v1.4
 
+    - name: Check if backup already exists
+      ansible.builtin.stat:
+        path: {{ backup_dest }}
+      register: file
+
+    - name: Create an initial backup
+      ansible.builtin.shell: "shrink_backup_workdir }}/shrink-backup -a {{ backup_dest }}"
+      when: not file.stat.exists 
+
     - name: Add ntfy topic env variable to cron
       ansible.builtin.cron:
         env: true
