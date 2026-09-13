@@ -13,7 +13,7 @@
       ansible.builtin.user:
         name: docker
         group: docker
-        password: "$6$hKUIHWzyAe.qdN/Y$XberLV.P/60muILUwkiTFs1rW5YqNs40H1032ZslYKw9psOqPXz/BzhwtRyo5Lz7JQRX6MplR1WTP5Q88zCUu/"
+        password: "{{ docker_user_pw }}"
         generate_ssh_key: true
         state: present
 
