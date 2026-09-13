@@ -22,7 +22,6 @@ services:
       FTLCONF_dns_listeningMode: 'ALL'
     # Volumes store your data between container upgrades
     volumes:
-    # TODO create this folder in ansible
       # For persisting Pi-hole's databases and common configuration file
       - './etc:/etc/pihole'
     # cap_add:
