@@ -1,0 +1,40 @@
+---
+- name: Set up Pi-hole workdir
+  ansible.builtin.file:
+    path: "{{ pihole_workdir }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+
+- name: Set up Pi-hole settings directory
+  ansible.builtin.file:
+    path: "{{ pihole_workdir }}/etc"
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+
+- name: Generate Pi-hole environment file
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ pihole_workdir }}/.env"
+    owner: docker
+    group: docker
+    mode: "0600"
+  no_log: true
+
+- name: Generate Pi-hole Compose file
+  ansible.builtin.template:
+    src: compose.yml.j2
+    dest: "{{ pihole_workdir }}/compose.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Run Pi-hole
+  community.docker.docker_compose_v2:
+    project_src: "{{ pihole_workdir }}"
+    env_files:
+      - ".env"
+    state: present

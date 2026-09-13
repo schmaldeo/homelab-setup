@@ -14,5 +14,9 @@
 - name: Set up backups
   ansible.builtin.import_playbook: apps/backups/deploy.yml
 
-- name: Set up DNS
-  ansible.builtin.import_playbook: apps/pi-hole/deploy.yml
+- name: Deploy Pi-hole
+  hosts: pihole
+  become: true
+  become_user: docker
+  roles:
+    - pihole
