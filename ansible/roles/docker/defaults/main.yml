@@ -2,6 +2,8 @@
 docker_user: docker
 docker_workdir: "/home/docker/dimgs"
 docker_user_password_hash: "{{ docker_user_pw }}"
+# these are split in case at some point in the future there is a need
+# to install an additional package on only one of the two
 docker_debian_packages:
   - docker-ce
   - docker-ce-cli
