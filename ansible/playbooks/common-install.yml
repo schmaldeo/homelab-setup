@@ -11,8 +11,11 @@
 - name: Set up NFS resource
   ansible.builtin.import_playbook: os/nfs_resource_setup.yml
 
-- name: Set up backups
-  ansible.builtin.import_playbook: apps/backups/deploy.yml
+- name: Configure Restic backups
+  hosts: backups
+  become: true
+  roles:
+    - restic
 
 - name: Deploy Pi-hole
   hosts: pihole

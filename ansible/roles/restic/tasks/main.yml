@@ -1,0 +1,67 @@
+---
+- name: Create Restic configuration directory
+  ansible.builtin.file:
+    path: "{{ restic_password_file | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Install Restic password file
+  ansible.builtin.copy:
+    content: "{{ restic_repository_password }}\n"
+    dest: "{{ restic_password_file }}"
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+
+- name: Check whether the Restic repository exists
+  ansible.builtin.stat:
+    path: "{{ restic_repository }}/config"
+  register: restic_repository_config
+
+- name: Initialize Restic repository
+  ansible.builtin.command:
+    argv:
+      - restic
+      - --repo
+      - "{{ restic_repository }}"
+      - --password-file
+      - "{{ restic_password_file }}"
+      - init
+  no_log: true
+  when: not restic_repository_config.stat.exists
+  changed_when: true
+
+- name: Schedule Restic backup
+  ansible.builtin.cron:
+    name: Daily Restic backup
+    job: >-
+      flock -n /run/restic.lock
+      restic
+      --repo {{ restic_repository }}
+      --password-file {{ restic_password_file }}
+      backup {{ restic_backup_paths | join(' ') }}
+      >/var/log/restic.log 2>&1
+    minute: 0
+    hour: "{{ restic_backup_hour }}"
+    state: present
+
+- name: Schedule Restic retention
+  ansible.builtin.cron:
+    name: Restic snapshot retention
+    job: >-
+      flock -n /run/restic.lock
+      restic
+      --repo {{ restic_repository }}
+      --password-file {{ restic_password_file }}
+      forget
+      --keep-daily {{ restic_keep_daily }}
+      --keep-weekly {{ restic_keep_weekly }}
+      --keep-monthly {{ restic_keep_monthly }}
+      --prune
+      >/var/log/restic.log 2>&1
+    minute: 0
+    hour: "{{ restic_retention_hour }}"
+    state: present

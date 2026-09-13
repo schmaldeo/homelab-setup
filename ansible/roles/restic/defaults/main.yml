@@ -1,0 +1,12 @@
+---
+restic_repository: "{{ backup_mount_dir }}/{{ inventory_hostname }}_backup"
+restic_password_file: "/root/.config/restic/password"
+restic_backup_paths:
+  - /etc
+  - /home
+  - /root
+restic_keep_daily: 3
+restic_keep_weekly: 4
+restic_keep_monthly: 6
+restic_backup_hour: 2
+restic_retention_hour: 3
