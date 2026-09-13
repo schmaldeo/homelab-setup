@@ -1,8 +1,0 @@
----
-- name: Deploy monitoring tools
-  hosts: monitoring
-  become: true
-  become_user: docker
-
-  # tasks:
-  #   - name: Copy 

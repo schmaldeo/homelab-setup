@@ -1,0 +1,7 @@
+---
+monitoring_workdir: "{{ docker_workdir }}/monitoring"
+monitoring_prometheus_image: "prom/prometheus:v3.5.0"
+monitoring_grafana_image: "grafana/grafana:12.1.1"
+monitoring_node_exporter_image: "prom/node-exporter:v1.9.1"
+monitoring_wireguard_exporter_image: >-
+  mindflavor/prometheus-wireguard-exporter:latest

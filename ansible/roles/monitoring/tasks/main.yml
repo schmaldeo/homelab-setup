@@ -1,0 +1,49 @@
+---
+- name: Create monitoring directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+  loop:
+    - "{{ monitoring_workdir }}"
+    - "{{ monitoring_workdir }}/prometheus"
+    - "{{ monitoring_workdir }}/grafana/provisioning"
+
+- name: Render monitoring Compose file
+  ansible.builtin.template:
+    src: compose.yml.j2
+    dest: "{{ monitoring_workdir }}/compose.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Render Prometheus configuration
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ monitoring_workdir }}/prometheus/prometheus.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Render Grafana datasource provisioning
+  ansible.builtin.template:
+    src: grafana/provisioning/prometheus.yml.j2
+    dest: "{{ monitoring_workdir }}/grafana/provisioning/prometheus.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Render Grafana dashboard provisioning
+  ansible.builtin.template:
+    src: grafana/provisioning/dashboards.yml.j2
+    dest: "{{ monitoring_workdir }}/grafana/provisioning/dashboards.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Run monitoring stack
+  community.docker.docker_compose_v2:
+    project_src: "{{ monitoring_workdir }}"
+    state: present

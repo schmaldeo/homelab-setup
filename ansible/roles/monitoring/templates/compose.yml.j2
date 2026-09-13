@@ -1,0 +1,35 @@
+---
+services:
+  prometheus:
+    image: "{{ monitoring_prometheus_image }}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: "{{ monitoring_grafana_image }}"
+    volumes:
+      - "./grafana/provisioning:/etc/grafana/provisioning:ro"
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  node-exporter:
+    image: "{{ monitoring_node_exporter_image }}"
+    pid: host
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - "--path.rootfs=/host"
+    restart: unless-stopped
+
+  wireguard-exporter:
+    image: "{{ monitoring_wireguard_exporter_image }}"
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
