@@ -21,7 +21,7 @@ backups:
   hosts:
     debian_vm:
   vars:
-    backup_dest: "{{ nfs_dir }}/backup.img"
+    backup_dest: "{{ backup_mount_dir }}/backup.img"
 
 pihole:
   hosts:
