@@ -32,3 +32,4 @@
   handlers:
     - name: Reload NFS exports
       ansible.builtin.command: exportfs -ra
+      changed_when: true
