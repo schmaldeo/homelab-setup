@@ -1,20 +1,17 @@
 ---
-- name: Update packages
+- name: Install system packages
   hosts: debian
   become: true
 
   tasks:
-    - name: Update apt cache and run apt upgrade
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: true
-
     - name: Install required packages
       ansible.builtin.apt:
         pkg:
           - acl
           - git
           - nfs-kernel-server
+          - parted
+        update_cache: true
         state: present
 
 

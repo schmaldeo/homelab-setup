@@ -27,7 +27,7 @@
       register: file
 
     - name: Create an initial backup
-      ansible.builtin.command: "{{ shrink_backup_workdir }}/shrink-backup -a {{ backup_dest }}"
+      ansible.builtin.command: "{{ shrink_backup_workdir }}/shrink-backup -ay {{ backup_dest }}"
       when: not file.stat.exists
       changed_when: not file.stat.exists
 
