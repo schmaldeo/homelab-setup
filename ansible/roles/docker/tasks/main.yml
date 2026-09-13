@@ -28,6 +28,24 @@
     group: "{{ docker_user }}"
     mode: "0755"
 
+- name: Configure Docker user Bash customizations
+  ansible.builtin.blockinfile:
+    path: "/home/{{ docker_user }}/.bashrc"
+    create: true
+    owner: "{{ docker_user }}"
+    group: "{{ docker_user }}"
+    mode: "0644"
+    marker: "# {mark} ANSIBLE DOCKER CUSTOMIZATIONS"
+    block: |
+      # Docker shortcuts
+      {% for alias in docker_custom_aliases %}
+      {{ alias }}
+      {% endfor %}
+
+      {% for function in docker_custom_functions %}
+      {{ function }}
+      {% endfor %}
+
 - name: Enable and start Docker
   ansible.builtin.systemd_service:
     name: docker

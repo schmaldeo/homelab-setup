@@ -14,3 +14,14 @@ docker_fedora_packages:
   - containerd.io
   - docker-buildx-plugin
   - docker-compose-plugin
+docker_custom_aliases:
+  - "alias ds='docker ps -a'"
+docker_custom_functions:
+  - |
+    dp() {
+      docker exec -it "$1" /bin/bash
+    }
+  - |
+    dpsh() {
+      docker exec -it "$1" /bin/sh
+    }
