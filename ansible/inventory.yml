@@ -8,6 +8,8 @@ all:
     ntfy_topic: fake_topic
     repo_root: "{{ inventory_dir }}/.."
     docker_workdir: "/home/docker/dimgs"
+    backup_mount_dir: "/mnt/extdrive"
+    backup_disk_label: "BACKUP"
 
 
 deploy:
@@ -18,7 +20,7 @@ backups:
   hosts:
     debian_vm:
   vars:
-    backup_dest: "/mnt/extdrive/backup.img"
+    backup_dest: "{{ nfs_dir }}/backup.img"
 
 pihole:
   hosts:

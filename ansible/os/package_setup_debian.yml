@@ -14,6 +14,7 @@
         pkg:
           - acl
           - git
+          - nfs-kernel-server
         state: present
 
 

@@ -1,0 +1,35 @@
+---
+- name: Mount backup disk and make it an NFS share
+  hosts: deploy
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Create NFS share directory
+      ansible.builtin.file:
+        name: "{{ backup_mount_dir }}"
+        state: directory
+        mode: '0777'
+        owner: nobody
+        group: nogroup
+
+    - name: Configure share in /etc/exports
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: '/mnt/nfs_share *(rw,sync,no_subtree_check)'
+        create: true
+        mode: '0644'
+
+    - name: Mount backup disk
+      ansible.posix.mount:
+        path: "{{ backup_mount_dir }}"
+        src: "LABEL={{ backup_disk_label }}"
+        fstype: ext4
+        opts: "defaults,nofail,x-systemd.automount"
+        state: mounted
+
+    - name: Restart NFS server
+      ansible.builtin.service:
+        name: nfs-kernel-server
+        state: restarted
+        enabled: true
