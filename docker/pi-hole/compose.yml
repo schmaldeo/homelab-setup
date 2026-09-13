@@ -1,3 +1,4 @@
+---
 # Taken from official pi-hole repo and adapted slightly setup
 services:
   pihole:

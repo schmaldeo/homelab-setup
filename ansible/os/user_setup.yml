@@ -1,3 +1,4 @@
+---
 - name: Set up users and groups
   hosts: deploy
   become: true
