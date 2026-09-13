@@ -1,4 +1,9 @@
 ---
+- name: Install Restic
+  ansible.builtin.package:
+    name: restic
+    state: present
+
 - name: Create Restic configuration directory
   ansible.builtin.file:
     path: "{{ restic_password_file | dirname }}"
