@@ -7,7 +7,7 @@ services:
     volumes:
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
     ports:
-      - "9090:9090"
+      - "{{ monitoring_prometheus_port }}:9090"
     restart: unless-stopped
 
   grafana:
