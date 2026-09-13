@@ -2,6 +2,7 @@
 - name: Deploy pi-hole
   hosts: pihole
   become: true
+  become_user: docker
   vars:
     app_workdir: "{{ docker_workdir }}/pi-hole"
 

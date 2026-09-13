@@ -13,6 +13,7 @@
       ansible.builtin.apt:
         pkg:
           - acl
+          - git
         state: present
 
 
