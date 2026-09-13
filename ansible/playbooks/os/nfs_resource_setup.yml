@@ -8,9 +8,9 @@
       ansible.builtin.file:
         name: "{{ backup_mount_dir }}"
         state: directory
-        mode: '0777'
-        owner: nobody
-        group: nogroup
+        mode: '0770'
+        owner: root
+        group: root
 
     - name: Configure share in /etc/exports
       ansible.builtin.lineinfile:
@@ -20,6 +20,7 @@
           {{ nfs_allowed_network }}(rw,sync,no_subtree_check)
         create: true
         mode: '0644'
+      notify: Reload NFS exports
 
     - name: Mount backup disk
       ansible.posix.mount:
@@ -28,9 +29,6 @@
         fstype: ext4
         opts: "defaults,nofail,x-systemd.automount"
         state: mounted
-
-    - name: Restart NFS server
-      ansible.builtin.service:
-        name: nfs-kernel-server
-        state: restarted
-        enabled: true
+  handlers:
+    - name: Reload NFS exports
+      ansible.builtin.command: exportfs -ra
