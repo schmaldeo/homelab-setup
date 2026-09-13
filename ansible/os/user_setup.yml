@@ -19,7 +19,7 @@
 
     - name: Setup docker working directory
       ansible.builtin.file:
-        name: {{ docker_workdir }}
+        name: "{{ docker_workdir }}"
         state: directory
         owner: docker
         mode: '0755'

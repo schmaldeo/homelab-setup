@@ -1,0 +1,15 @@
+---
+- name: Set up packages
+  ansible.builtin.import_playbook: os/package_setup_debian.yml
+
+- name: Set up users
+  ansible.builtin.import_playbook: os/user_setup.yml
+
+- name: Set up NFS resource
+  ansible.builtin.import_playbook: os/nfs_resource_setup.yml
+
+- name: Set up backups
+  ansible.builtin.import_playbook: apps/backups/deploy.yml
+
+- name: Set up DNS
+  ansible.builtin.import_playbook: apps/pi-hole/deploy.yml
