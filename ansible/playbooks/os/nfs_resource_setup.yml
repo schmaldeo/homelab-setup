@@ -2,7 +2,6 @@
 - name: Mount backup disk and make it an NFS share
   hosts: deploy
   become: true
-  become_user: root
 
   tasks:
     - name: Create NFS share directory
@@ -16,7 +15,7 @@
     - name: Configure share in /etc/exports
       ansible.builtin.lineinfile:
         path: /etc/exports
-        line: '/mnt/nfs_share *(rw,sync,no_subtree_check)'
+        line: '{{ backup_mount_dir }} *(rw,sync,no_subtree_check)'
         create: true
         mode: '0644'
 

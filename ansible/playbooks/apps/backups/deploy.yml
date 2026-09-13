@@ -2,7 +2,6 @@
 - name: Deploy backup scripts
   hosts: backups
   become: true
-  become_user: root
   vars:
     app_workdir: "/scripts/backup"
     shrink_backup_workdir: "{{ app_workdir }}/shrink-backup"
@@ -23,12 +22,17 @@
 
     - name: Check if backup already exists
       ansible.builtin.stat:
-        path: {{ backup_dest }}
+        path: "{{ backup_dest }}"
       register: file
 
     - name: Create an initial backup
-      ansible.builtin.shell: "shrink_backup_workdir }}/shrink-backup -a {{ backup_dest }}"
-      when: not file.stat.exists 
+      ansible.builtin.command:
+        argv:
+          - "{{ shrink_backup_workdir }}/shrink-backup"
+          - "-ay"
+          - "{{ backup_dest }}"
+      when: not file.stat.exists
+      changed_when: not file.stat.exists
 
     - name: Add ntfy topic env variable to cron
       ansible.builtin.cron:
@@ -39,7 +43,9 @@
     - name: Add shrink-backup to cron
       ansible.builtin.cron:
         name: Daily backup
-        job: "{{ shrink_backup_workdir }}/shrink-backup -Utly --fix {{ backup_dest }} >/dev/null 2>&1"
+        job: >-
+          {{ shrink_backup_workdir }}/shrink-backup
+          -Utly --fix {{ backup_dest }} >/dev/null 2>&1
         minute: 0
         hour: 2
         day: "*"
@@ -63,7 +69,9 @@
     - name: Add bk-integrity-checker to cron
       ansible.builtin.cron:
         name: Daily backup integrity check
-        job: "{{ bk_integrity_checker_workdir }}/check.sh {{ backup_dest }} >>/var/log/bk-integrity-checker.log 2>&1"
+        job: >-
+          {{ bk_integrity_checker_workdir }}/check.sh {{ backup_dest }}
+          >>/var/log/bk-integrity-checker.log 2>&1
         minute: 0
         hour: 0
         day: "*"
