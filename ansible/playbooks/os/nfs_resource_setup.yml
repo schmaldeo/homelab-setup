@@ -15,7 +15,7 @@
     - name: Configure share in /etc/exports
       ansible.builtin.lineinfile:
         path: /etc/exports
-        line: '{{ backup_mount_dir }} *(rw,sync,no_subtree_check)'
+        line: '{{ backup_mount_dir }} {{ nfs_allowed_network }}(rw,sync,no_subtree_check)'
         create: true
         mode: '0644'
 
