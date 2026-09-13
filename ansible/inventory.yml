@@ -5,17 +5,29 @@ all:
   vars:
     ansible_user: ansible
     ansible_become_user: root
+    ntfy_topic: fake_topic
+    repo_root: "{{ inventory_dir }}/.."
+    docker_workdir: "/home/docker/dimgs"
 
 
 deploy:
   hosts:
     debian_vm:
 
-pi-hole:
+backups:
+  hosts:
+    debian_vm:
+  vars:
+    backup_dest: "/mnt/extdrive/backup.img"
+
+pihole:
   hosts:
     debian_vm:
   vars:
     ansible_become_user: docker
+    pihole_pw: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      306664353266326539633462343135303232646233346238666662363837656538343431363135336362303961643864386261346236623239323661356432300a623033323162376535613432383630373537353030613535643032353730623532393132393135313433323136353330363665326564383961306536333839350a3937613966643663313733393065663831366565306438396433623963313039
     
 
 debian:

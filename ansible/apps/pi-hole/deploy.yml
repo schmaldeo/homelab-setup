@@ -1,6 +1,6 @@
 ---
 - name: Deploy pi-hole
-  hosts: pi-hole
+  hosts: pihole
   become: true
   vars:
     app_workdir: "{{ docker_workdir }}/pi-hole"
