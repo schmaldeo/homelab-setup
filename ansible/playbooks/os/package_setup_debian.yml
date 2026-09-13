@@ -1,5 +1,5 @@
 ---
-- name: Install system packages
+- name: Install system packages (Debian)
   hosts: debian
   become: true
 
@@ -14,8 +14,18 @@
         update_cache: true
         state: present
 
+- name: Install backup packages (Debian)
+  hosts: debian:&backups
+  become: true
 
-- name: Install Docker
+  tasks:
+    - name: Install restic
+      ansible.builtin.apt:
+        name: restic
+        state: present
+        update_cache: true
+
+- name: Install Docker (Debian)
   hosts: debian
   become: true
 
@@ -45,7 +55,7 @@
         name: docker
         types: deb
         uris: https://download.docker.com/linux/debian
-        suites: "{{ ansible_distribution_release }}"
+        suites: "{{ ansible_facts['distribution_release'] }}"
         components: stable
         signed_by: /etc/apt/keyrings/docker.asc
         state: present
