@@ -1,0 +1,12 @@
+---
+monitoring_workdir: "{{ docker_workdir }}/monitoring"
+monitoring_grafana_dir: "{{ monitoring_workdir }}/grafana"
+monitoring_provisioning_dir: "{{ monitoring_grafana_dir }}/provisioning"
+monitoring_datasources_dir: "{{ monitoring_provisioning_dir }}/datasources"
+monitoring_dashboards_dir: "{{ monitoring_provisioning_dir }}/dashboards"
+monitoring_prometheus_image: "prom/prometheus:v3.5.0"
+monitoring_grafana_image: "grafana/grafana:12.1.1"
+monitoring_node_exporter_image: "prom/node-exporter:v1.9.1"
+monitoring_wireguard_exporter_image: >-
+  mindflavor/prometheus-wireguard-exporter:latest
+monitoring_prometheus_port: 19090

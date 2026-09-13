@@ -26,7 +26,6 @@
 - name: Deploy Pi-hole
   hosts: pihole
   become: true
-  become_user: docker
   roles:
     - pihole
 
@@ -35,3 +34,10 @@
   become: true
   roles:
     - wireguard
+
+- name: Deploy monitoring
+  hosts: monitoring
+  become: true
+  become_user: docker
+  roles:
+    - monitoring
