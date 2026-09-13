@@ -43,7 +43,7 @@
       ansible.builtin.cron:
         name: Daily backup
         job: >-
-          restic 
+          restic
           -r {{ restic_repository }}
           --password-file {{ restic_pw_file }}
           backup
