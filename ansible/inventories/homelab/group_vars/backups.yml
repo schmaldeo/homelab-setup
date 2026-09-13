@@ -1,0 +1,1 @@
+backup_dest: "{{ backup_mount_dir }}/backup.img"

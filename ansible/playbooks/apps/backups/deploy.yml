@@ -2,7 +2,6 @@
 - name: Deploy backup scripts
   hosts: backups
   become: true
-  become_user: root
   vars:
     app_workdir: "/scripts/backup"
     shrink_backup_workdir: "{{ app_workdir }}/shrink-backup"

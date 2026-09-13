@@ -1,0 +1,7 @@
+ansible_user: ansible
+ansible_become_user: root
+ntfy_topic: fake_topic
+repo_root: "{{ inventory_dir }}/.."
+docker_workdir: "/home/docker/dimgs"
+backup_mount_dir: "/mnt/extdrive"
+backup_disk_label: "BACKUP"
