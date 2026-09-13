@@ -38,3 +38,5 @@
     env_files:
       - ".env"
     state: present
+  become: true
+  become_user: docker
