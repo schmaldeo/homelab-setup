@@ -3,6 +3,8 @@ services:
     image: prom/prometheus:latest
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      # TODO zmienna środowiskowa
+      - /opt/homelab/grafana/provisioning:/etc/grafana/provisioning
     ports:
       - "9090:9090"
     restart: always
