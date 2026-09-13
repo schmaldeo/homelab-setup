@@ -1,0 +1,23 @@
+---
+# Taken from official Pi-hole repository and adapted slightly.
+services:
+  pihole:
+    image: {{ pihole_image }}
+    ports:
+      # DNS ports
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Default HTTP port
+      - "80:80/tcp"
+      # Default HTTPS port. FTL will generate a self-signed certificate.
+      - "443:443/tcp"
+      # Uncomment if Pi-hole is used as the DHCP server.
+      # - "67:67/udp"
+    environment:
+      TZ: "{{ pihole_timezone }}"
+      FTLCONF_webserver_api_password: ${WEB_PASSWORD:?WEB_PASSWORD must be set}
+      # If using Docker's default bridge network, DNS listening mode must be ALL.
+      FTLCONF_dns_listeningMode: "ALL"
+    volumes:
+      - "./etc:/etc/pihole"
+    restart: unless-stopped

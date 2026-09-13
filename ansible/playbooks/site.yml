@@ -1,0 +1,37 @@
+---
+- name: Configure common system
+  hosts: debian:fedora
+  become: true
+  roles:
+    - common
+
+- name: Configure Docker hosts
+  hosts: deploy
+  become: true
+  roles:
+    - docker
+
+- name: Configure NFS servers
+  hosts: deploy
+  become: true
+  roles:
+    - nfs_server
+
+- name: Configure Restic backups
+  hosts: backups
+  become: true
+  roles:
+    - restic
+
+- name: Deploy Pi-hole
+  hosts: pihole
+  become: true
+  become_user: docker
+  roles:
+    - pihole
+
+- name: Install WireGuard tools
+  hosts: wireguard
+  become: true
+  roles:
+    - wireguard

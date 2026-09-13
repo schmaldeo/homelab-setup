@@ -1,0 +1,4 @@
+---
+pihole_workdir: "{{ docker_workdir }}/pi-hole"
+pihole_image: "pihole/pihole:2026.07.2"
+pihole_timezone: "Europe/Warsaw"
