@@ -56,7 +56,7 @@
         month: "*"
         weekday: "*"
         state: present
-    
+
     - name: Add restic retention task to cron
       ansible.builtin.cron:
         name: restic log snapshot retention
