@@ -25,7 +25,7 @@ services:
     volumes:
     # TODO create this folder in ansible
       # For persisting Pi-hole's databases and common configuration file
-      - '/etc/pihole:/etc/pihole'
+      - './etc:/etc/pihole'
     cap_add:
       # See https://docs.pi-hole.net/docker/#note-on-capabilities
       # Required if you are using Pi-hole as your DHCP server, else not needed
