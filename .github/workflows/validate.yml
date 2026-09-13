@@ -42,7 +42,13 @@ jobs:
       - name: Validate Docker Compose configuration
         env:
           WEB_PASSWORD: ci-validation-password
-        run: docker compose -f docker/pi-hole/compose.yml config --quiet
+        run: |
+          ansible localhost -c local -m ansible.builtin.template \
+            -a "src=ansible/roles/pihole/templates/compose.yml.j2 \
+            dest=/tmp/pihole-compose.yml" \
+            -e pihole_image=pihole/pihole:2026.07.2 \
+            -e pihole_timezone=UTC
+          docker compose -f /tmp/pihole-compose.yml config --quiet
 
       - name: Run ShellCheck
         run: shellcheck scripts/**/*.sh

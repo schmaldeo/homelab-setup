@@ -1,0 +1,35 @@
+---
+- name: Install Docker on Debian
+  ansible.builtin.include_tasks: Debian.yml
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install Docker on Red Hat systems
+  ansible.builtin.include_tasks: RedHat.yml
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: Create Docker group
+  ansible.builtin.group:
+    name: "{{ docker_user }}"
+    state: present
+
+- name: Create Docker user
+  ansible.builtin.user:
+    name: "{{ docker_user }}"
+    group: "{{ docker_user }}"
+    password: "{{ docker_user_password_hash }}"
+    generate_ssh_key: true
+    state: present
+
+- name: Create Docker working directory
+  ansible.builtin.file:
+    path: "{{ docker_workdir }}"
+    state: directory
+    owner: "{{ docker_user }}"
+    group: "{{ docker_user }}"
+    mode: "0755"
+
+- name: Enable and start Docker
+  ansible.builtin.systemd_service:
+    name: docker
+    enabled: true
+    state: started
