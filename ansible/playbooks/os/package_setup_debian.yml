@@ -25,6 +25,17 @@
         state: present
         update_cache: true
 
+- name: Install Wireguard packages (Debian)
+  hosts: debian:&wireguard
+  become: true
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg:
+          - wireguard
+        state: present
+
 - name: Install Docker (Debian)
   hosts: debian
   become: true

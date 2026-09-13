@@ -22,6 +22,17 @@
         name: restic
         state: present
 
+- name: Install WireGuard tools (Fedora)
+  hosts: fedora:&wireguard
+  become: true
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.dnf:
+        pkg:
+          - wireguard-tools
+        state: present
+
 - name: Install Docker (Fedora)
   hosts: fedora
   become: true
