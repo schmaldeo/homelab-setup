@@ -1,5 +1,5 @@
 ---
-- name: Install system packages
+- name: Install system packages (Debian)
   hosts: debian
   become: true
 
@@ -14,8 +14,18 @@
         update_cache: true
         state: present
 
+- name: Install backup packages (Debian)
+  hosts: debian:&backups
+  become: true
 
-- name: Install Docker
+  tasks:
+    - name: Install restic
+      ansible.builtin.apt:
+        name: restic
+        state: present
+        update_cache: true
+
+- name: Install Docker (Debian)
   hosts: debian
   become: true
 
