@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  lint:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,11 +18,31 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install linters
-        run: pip install yamllint flake8
+      - name: Install validation tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ansible-core ansible-lint yamllint
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
 
       - name: Run yamllint
         run: yamllint .
 
-      - name: Run flake8
-        run: flake8 .
+      - name: Run ansible-lint
+        run: ansible-lint
+
+      - name: Check Ansible playbook syntax
+        run: >
+          ansible-playbook
+          -i ansible/inventories/homelab/hosts.yml
+          --syntax-check
+          ansible/playbooks/common-install.yml
+
+      - name: Validate Docker Compose configuration
+        env:
+          WEB_PASSWORD: ci-validation-password
+        run: docker compose -f docker/pi-hole/compose.yml config --quiet
+
+      - name: Run ShellCheck
+        run: shellcheck scripts/**/*.sh
