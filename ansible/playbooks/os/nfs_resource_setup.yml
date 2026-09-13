@@ -2,7 +2,6 @@
 - name: Mount backup disk and make it an NFS share
   hosts: deploy
   become: true
-  become_user: root
 
   tasks:
     - name: Create NFS share directory
