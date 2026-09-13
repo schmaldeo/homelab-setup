@@ -29,3 +29,9 @@
   become_user: docker
   roles:
     - pihole
+
+- name: Install WireGuard tools
+  hosts: wireguard
+  become: true
+  roles:
+    - wireguard

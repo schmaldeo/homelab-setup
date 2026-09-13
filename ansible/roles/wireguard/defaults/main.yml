@@ -1,0 +1,6 @@
+---
+wireguard_packages:
+  Debian:
+    - wireguard
+  RedHat:
+    - wireguard-tools
