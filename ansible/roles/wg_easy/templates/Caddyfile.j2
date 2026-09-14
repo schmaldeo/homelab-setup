@@ -1,0 +1,13 @@
+{
+  debug
+  default_sni {{ wg_easy_host }}
+}
+
+https://{{ wg_easy_host }}:443 {
+  tls internal
+  log {
+    output stdout
+    format console
+  }
+  reverse_proxy wg-easy:80
+}

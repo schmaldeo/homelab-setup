@@ -42,8 +42,6 @@ jobs:
       - name: Validate Docker Compose configuration
         env:
           WEB_PASSWORD: ci-validation-password
-          MONITORING_IMAGE: >-
-            mindflavor/prometheus-wireguard-exporter:latest
         run: |
           ansible localhost -c local -m ansible.builtin.template \
             -a "src=ansible/roles/pihole/templates/compose.yml.j2 \
@@ -51,17 +49,23 @@ jobs:
             -e pihole_image=pihole/pihole:2026.07.2 \
             -e pihole_timezone=UTC
           docker compose -f /tmp/pihole-compose.yml config --quiet
-          cat > /tmp/monitoring-vars.yml <<EOF
-          monitoring_wireguard_exporter_image: $MONITORING_IMAGE
-          EOF
           ansible localhost -c local -m ansible.builtin.template \
             -a "src=ansible/roles/monitoring/templates/compose.yml.j2 \
             dest=/tmp/monitoring-compose.yml" \
             -e monitoring_prometheus_image=prom/prometheus:v3.5.0 \
             -e monitoring_grafana_image=grafana/grafana:12.1.1 \
-            -e monitoring_node_exporter_image=prom/node-exporter:v1.9.1 \
-            -e @/tmp/monitoring-vars.yml
+            -e monitoring_node_exporter_image=prom/node-exporter:v1.9.1
           docker compose -f /tmp/monitoring-compose.yml config --quiet
+          ansible localhost -c local -m ansible.builtin.template \
+            -a "src=ansible/roles/wg_easy/templates/compose.yml.j2 \
+            dest=/tmp/wg-easy-compose.yml" \
+            -e wg_easy_host=192.0.2.1 \
+            -e wg_easy_image=ghcr.io/wg-easy/wg-easy:15 \
+            -e wg_easy_wireguard_port=51820 \
+            -e wg_easy_host=192.0.2.1 \
+            -e wg_easy_panel_port=51821 \
+            -e wg_easy_caddy_image=caddy:2.10.0-alpine
+          docker compose -f /tmp/wg-easy-compose.yml config --quiet
 
       - name: Run ShellCheck
         run: shellcheck scripts/**/*.sh

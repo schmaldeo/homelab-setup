@@ -29,11 +29,11 @@
   roles:
     - pihole
 
-- name: Install WireGuard tools
-  hosts: wireguard
+- name: Deploy wg-easy
+  hosts: wg_easy
   become: true
   roles:
-    - wireguard
+    - wg_easy
 
 - name: Deploy monitoring
   hosts: monitoring

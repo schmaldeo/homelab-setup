@@ -1,0 +1,42 @@
+---
+- name: Create wg-easy workdir
+  ansible.builtin.file:
+    path: "{{ wg_easy_workdir }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+
+- name: Create Caddy data directories
+  ansible.builtin.file:
+    path: "{{ wg_easy_workdir }}/caddy/{{ item }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+  loop:
+    - data
+    - config
+
+- name: Render Caddy configuration
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: "{{ wg_easy_workdir }}/Caddyfile"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Render wg-easy Compose file
+  ansible.builtin.template:
+    src: compose.yml.j2
+    dest: "{{ wg_easy_workdir }}/compose.yml"
+    owner: docker
+    group: docker
+    mode: "0644"
+
+- name: Run wg-easy
+  community.docker.docker_compose_v2:
+    project_src: "{{ wg_easy_workdir }}"
+    state: present
+  become: true
+  become_user: docker

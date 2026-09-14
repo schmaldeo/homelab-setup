@@ -1,5 +1,0 @@
----
-- name: Install WireGuard tools
-  ansible.builtin.package:
-    name: "{{ wireguard_packages[ansible_facts['os_family']] }}"
-    state: present

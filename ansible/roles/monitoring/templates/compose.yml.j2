@@ -26,10 +26,3 @@ services:
     command:
       - "--path.rootfs=/host"
     restart: unless-stopped
-
-  wireguard-exporter:
-    image: "{{ monitoring_wireguard_exporter_image }}"
-    network_mode: host
-    cap_add:
-      - NET_ADMIN
-    restart: unless-stopped

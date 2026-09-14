@@ -53,6 +53,14 @@
     group: docker
     mode: "0644"
 
+- name: Render WireGuard dashboard
+  ansible.builtin.template:
+    src: grafana/dashboards/wireguard.json.j2
+    dest: "{{ monitoring_dashboards_dir }}/wireguard.json"
+    owner: docker
+    group: docker
+    mode: "0644"
+
 - name: Run monitoring stack
   community.docker.docker_compose_v2:
     project_src: "{{ monitoring_workdir }}"
