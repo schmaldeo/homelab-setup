@@ -53,6 +53,7 @@ jobs:
             -a "src=ansible/roles/monitoring/templates/compose.yml.j2 \
             dest=/tmp/monitoring-compose.yml" \
             -e monitoring_prometheus_image=prom/prometheus:v3.5.0 \
+            -e monitoring_prometheus_port=19090 \
             -e monitoring_grafana_image=grafana/grafana:12.1.1 \
             -e monitoring_node_exporter_image=prom/node-exporter:v1.9.1
           docker compose -f /tmp/monitoring-compose.yml config --quiet
