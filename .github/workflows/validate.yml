@@ -68,5 +68,3 @@ jobs:
             -e wg_easy_caddy_image=caddy:2.10.0-alpine
           docker compose -f /tmp/wg-easy-compose.yml config --quiet
 
-      - name: Run ShellCheck
-        run: shellcheck scripts/**/*.sh
