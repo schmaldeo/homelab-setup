@@ -12,7 +12,7 @@
     - docker
 
 - name: Configure NFS servers
-  hosts: deploy
+  hosts: nfs
   become: true
   roles:
     - nfs_server

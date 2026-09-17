@@ -4,7 +4,6 @@ ntfy_topic: fake_topic
 repo_root: "{{ inventory_dir }}/../../.."
 docker_workdir: "/home/docker/dimgs"
 backup_mount_dir: "/mnt/extdrive"
-backup_disk_label: "BACKUP"
 
 docker_user_pw: !vault |
           $ANSIBLE_VAULT;1.1;AES256
