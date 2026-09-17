@@ -67,4 +67,3 @@ jobs:
             -e wg_easy_panel_port=51821 \
             -e wg_easy_caddy_image=caddy:2.10.0-alpine
           docker compose -f /tmp/wg-easy-compose.yml config --quiet
-
